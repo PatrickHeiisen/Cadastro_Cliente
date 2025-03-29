@@ -1,0 +1,27 @@
+{
+  "name": "cadastro",
+  "version": "1.0.0",
+  "description": "Sistema de cadastro de clientes",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuNunesB/cadastro.git"
+  },
+  "author": "Gustavo Nunes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GuNunesB/cadastro/issues"
+  },
+  "homepage": "https://github.com/GuNunesB/cadastro#readme",
+  "devDependencies": {
+    "electron": "^35.1.2"
+  },
+  "dependencies": {
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.12.1"
+  }
+}

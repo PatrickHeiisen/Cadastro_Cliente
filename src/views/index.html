@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Impedir a execução de scripts externos-->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'">
+    <!--Título da janela-->
+    <title>Cadastro de clientes</title>
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/css/style.css">
+</head>
+
+<body>
+    <section class="container" id="inputForm">
+        <h1 class="text-center mb-4">CADASTRO DE CLIENTE</h1>
+        <div class="row mb-4">
+            <div class="col-md-9">
+                <input type="text" id="searchCliente" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-primary w-200">Buscar</button>
+            </div>
+        </div>
+        <!-- FORMULARIO -->
+        <form id="formCliente" class="row g-3">
+            <!-- NOME -->
+            <div class="col-md-5">
+                <label for="nome" class="form-label">Nome:</label>
+                <input type="text" id="inputNome" class="form-control" required>
+            </div>
+            <!-- SEXO -->
+            <div class="col-md-4">
+                <label for="sexo" class="form-label">Sexo:</label>
+                <select id="inputSexo" class="form-select" required>
+                    <option value="">Selecione</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Outro">Outro</option>
+                    <option value="Prefiro não informar">Prefiro não informar</option>
+                </select>
+            </div>
+            <!-- CPF -->
+            <div class="col-md-6">
+                <label for="cpf" class="form-label">CPF:</label>
+                <input type="text" id="inputCpf" class="form-control" required onblur="validarCPF()">
+                <div id="cpfErro" class="text-danger mt-1" style="display: none;">CPF inválido</div>
+            </div>
+            <!-- EMAIL -->
+            <div class="col-md-6">
+                <label for="email" class="form-label">E-mail:</label>
+                <input type="email" id="inputEmail" class="form-control" required>
+            </div>
+            <!-- TELEFONE -->
+            <div class="col-md-6">
+                <label for="telefone" class="form-label">Telefone:</label>
+                <input type="text" id="inputTelefone" class="form-control" required>
+            </div>
+            <!-- CEP -->
+            <div class="col-md-6">
+                <label for="cep" class="form-label">CEP:</label>
+                <input type="text" id="inputCep" class="form-control" maxlength="9" onblur="buscarEndereco()" required>
+            </div>
+            <!-- LOGRADOURO -->
+            <div class="col-12">
+                <label for="logradouro" class="form-label">Logradouro:</label>
+                <input type="text" id="inputLogradouro" class="form-control">
+            </div>
+            <!-- NUMERO -->
+            <div class="col-md-4">
+                <label for="numero" class="form-label">Número:</label>
+                <input type="text" id="inputNumero" class="form-control">
+            </div>
+            <!-- COMPLEMENTO -->
+            <div class="col-md-4">
+                <label for="complemento" class="form-label">Complemento:</label>
+                <input type="text" id="inputComplemento" class="form-control">
+            </div>
+            <!-- BAIRRO -->
+            <div class="col-md-4">
+                <label for="bairro" class="form-label">Bairro:</label>
+                <input type="text" id="inputBairro" class="form-control">
+            </div>
+            <!-- CIDADE -->
+            <div class="col-md-6">
+                <label for="cidade" class="form-label">Cidade:</label>
+                <input type="text" id="inputCidade" class="form-control">
+            </div>
+            <!-- UF -->
+            <div class="col-md-6">
+                <label for="uf" class="form-label">UF:</label>
+                <select id="inputUf" class="form-select" required>
+                    <option value="">Selecione</option>
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AP">AP</option>
+                    <option value="AM">AM</option>
+                    <option value="BA">BA</option>
+                    <option value="CE">CE</option>
+                    <option value="DF">DF</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
+                    <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
+                    <option value="MG">MG</option>
+                    <option value="PA">PA</option>
+                    <option value="PB">PB</option>
+                    <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ">RJ</option>
+                    <option value="RN">RN</option>
+                    <option value="RS">RS</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
+
+                </select>
+            </div>
+            <!-- BOTOES -->
+            <div class="col-12 py-3 rodape">
+                <div class="botao-container">
+                    <button type="submit" class="btn btn-success" id="btnCreate">ADICIONAR</button>
+                    <button type="submit" class="btn btn-warning" id="btnUpdate">EDITAR</button>
+                    <button type="button" class="btn btn-danger" onclick="limparFormulario()"
+                        id="btnDelete">EXCLUIR</button>
+                    <button type="reset" class="btn btn-primary" onclick="resetForm()" id="btnReset"></button>
+                </div>
+            </div>
+            <div id="mensagemSucesso" class="text-success text-center mt-3" style="display: none;">Cadastro realizado
+                com sucesso!</div>
+        </form>
+    </section>
+    <footer>
+        <p id="dataAtual"></p>
+        <img src="../public/img/dboff.png" alt="ícone banco de dados" id="iconeDB">
+    </footer>
+
+    <script src="../public/js/bootstrap.min.js"></script>
+    <script src="renderer.js"></script>
+
+</body>
+
+</html>
