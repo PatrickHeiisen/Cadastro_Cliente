@@ -195,7 +195,6 @@ ipcMain.on('create-cliente', async (event, newCliente) => {
       }).then((result) => {
         // Se o botão OK for pressionado
         if (result.response === 0) {
-          const validCpf = document.getElementById('inputCpf')
           // Encontrar o campo de CPF
           event.reply('reset-cpf')
         }

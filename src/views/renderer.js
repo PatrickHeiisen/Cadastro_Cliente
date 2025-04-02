@@ -189,12 +189,12 @@ api.resetForm((args) => {
 })
 //= FIM RESET FORM =================================================
 
+// Reset CPF =======================================================
 function resetCpf() {
-    const ErroCpf = document.getElementById('inputCpf')
-    ErroCpf.style.border = "2px solid red";
-    ErroCpf.value = ""
-    ErroCpf.focus()
-
+    const erroCpf = document.getElementById('inputCpf')
+    erroCpf.style.border = "2px solid red";
+    erroCpf.value = ""
+    erroCpf.focus()
 }
 api.resetCpf((args) => {
     resetCpf()
