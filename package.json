@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GuNunesB/cadastro.git"
+    "url": "https://github.com/PatrickHeiisen/Cadastro_Cliente"
   },
-  "author": "Gustavo Nunes",
+  "author": "Patrick G",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GuNunesB/cadastro/issues"
+    "url": "https://github.com/PatrickHeiisen/Cadastro_Cliente"
   },
-  "homepage": "https://github.com/GuNunesB/cadastro#readme",
+  "homepage": "",
   "devDependencies": {
     "electron": "^35.1.2"
   },

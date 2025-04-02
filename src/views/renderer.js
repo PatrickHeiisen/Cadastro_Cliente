@@ -31,8 +31,8 @@ function validarCPF() {
     if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
         cpfErro.textContent = "CPF inválido! Insira um CPF válido.";
         cpfErro.style.display = "block";
-        cpfInput.style.border = "2px solid red";
-        return false;
+        //cpfInput.style.border = "2px solid red";
+        return; // Não impedindo o envio, apenas mostrando o erro
     }
 
     let soma = 0, resto;
@@ -42,8 +42,8 @@ function validarCPF() {
     if (resto !== parseInt(cpf[9])) {
         cpfErro.textContent = "CPF inválido!";
         cpfErro.style.display = "block";
-        cpfInput.style.border = "2px solid red";
-        return false;
+        //cpfInput.style.border = "2px solid red";
+        return; // Não impedindo o envio, apenas mostrando o erro
     }
 
     soma = 0;
@@ -53,15 +53,15 @@ function validarCPF() {
     if (resto !== parseInt(cpf[10])) {
         cpfErro.textContent = "CPF inválido!";
         cpfErro.style.display = "block";
-        cpfInput.style.border = "2px solid red";
-        return false;
+        //cpfInput.style.border = "2px solid red";
+        return; // Não impedindo o envio, apenas mostrando o erro
     }
 
     // CPF válido
-    cpfErro.style.display = "none";
-    //cpfInput.style.border = "2px solid green";
-    return true;
+    cpfErro.style.display = "none"; // Oculta a mensagem de erro
+    //cpfInput.style.border = ""; // Remove a borda vermelha (caso tenha)
 }
+
 
 // Validação de e-mail
 function validarEmail() {
@@ -188,3 +188,14 @@ api.resetForm((args) => {
     resetForm()
 })
 //= FIM RESET FORM =================================================
+
+function resetCpf() {
+    const ErroCpf = document.getElementById('inputCpf')
+    ErroCpf.style.border = "2px solid red";
+    ErroCpf.value = ""
+    ErroCpf.focus()
+
+}
+api.resetCpf((args) => {
+    resetCpf()
+})
