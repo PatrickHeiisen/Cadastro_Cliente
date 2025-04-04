@@ -1,3 +1,7 @@
+console.log("Processo Principal")
+
+// shell acessar links e aplicações externas
+
 const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain, dialog } = require('electron/main')
 
 const path = require('node:path')
@@ -6,6 +10,13 @@ const { conectar, desconectar } = require('./database.js')
 
 const clienteModel = require('./src/models/Clientes.js')
 
+// Importação da biblioteca nativa do js para manipular arquivos
+const fs = require('fs')
+
+// IMportação do pacote jspdf (arquivos pdf) npm install jspdf
+const { jspdf, default: jsPDF } = require('jspdf')
+
+//Janela Principal
 let win
 const createWindow = () => {
   nativeTheme.themeSource = 'light'
@@ -96,11 +107,11 @@ const templete = [
     ]
   },
   {
-    label: 'Relatório',
+    label: 'Relatórios',
     submenu: [
       {
         label: 'Clientes',
-        accelerator: 'Alt+C'
+        click: () => relatorioClientes()
       }
     ]
   },
@@ -161,7 +172,7 @@ ipcMain.on('create-cliente', async (event, newCliente) => {
       sexo: newCliente.sexoCli,
       cpf: newCliente.cpfCli,
       email: newCliente.emailCli,
-      telelefone: newCliente.telCli,
+      telefone: newCliente.telCli,
       cep: newCliente.cepCli,
       logradouro: newCliente.logradouroCli,
       numero: newCliente.numeroCli,
@@ -206,3 +217,90 @@ ipcMain.on('create-cliente', async (event, newCliente) => {
 
 })
 //= FIM CREATE ==================================================
+
+//===============================================================
+//===============================================================
+
+//=== Relatorio de Clientes =====================================
+async function relatorioClientes() {
+  try {
+    //============================================================================
+    // Configuração do documento pdf
+    //============================================================================
+    // p (portrait) l (landescape)
+    const doc = new jsPDF('p', 'mm', 'a4')
+
+    //Inserir data atual no documento
+    const dataAtual = new Date().toLocaleString('pt-BR')
+    // doc.setFontSize() tamanho da fonte
+    doc.setFontSize(10)
+    // doc.text() escreve um texto no documento
+    doc.text(`Data: ${dataAtual}`, 160, 15) // (x, y (mm))
+    doc.setFontSize(18)
+    doc.text("Relatorio de Cliente", 15, 30)
+    doc.setFontSize(12)
+    let y = 50 // variavel de apoio
+    doc.text("Nome", 14, y)
+    doc.text("Telefone", 85, y)
+    doc.text("E-mail", 130, y)
+    y += 5
+    // Desenhar uma linha
+    doc.setLineWidth(0.5)
+    doc.line(10, y, 200, y) // (10 (inicio)_______________________ 200(fim))
+    y += 10
+
+    //===========================================================================
+    // Obter a listagem de clientes (ordem alfabetica)
+    //===========================================================================
+    const clientes = await clienteModel.find().sort({ nome: 1 })
+    // Teste de recebimento
+    //console.log(clientes)
+    // Popular o documento pdf com os clientes cadastrados
+    clientes.forEach((c) => {
+      // Criar uma nova pagina se y > 280mm (A4 = 297mm)
+      if (y > 280) {
+        doc.addPage()
+        y = 20 // Margem de 20mm para iniciar a nova folha
+        doc.text("Nome", 14, y)
+        doc.text("Telefone", 85, y)
+        doc.text("E-mail", 130, y)
+        y += 5
+        // Desenhar uma linha
+        doc.setLineWidth(0.5)
+        doc.line(10, y, 200, y) // (10 (inicio)_______________________ 200(fim))
+        y += 10
+      }
+      doc.text(c.nome, 15, y)
+      doc.text(c.telefone, 85, y)
+      doc.text(c.email, 130, y)
+      y += 10
+    })
+
+    //============================================================================
+    // Numeração automatica de pagina
+    //============================================================================
+    const pages = doc.internal.getNumberOfPages()
+    for (let i = 1; i <= pages; i++){
+      doc.setPage(i)
+      doc.getFontSize(10)
+      doc.text(`Pagina ${i} de ${pages}`, 105,297, {align: 'center'})
+    }
+
+    //============================================================================
+    // Abrir o arquivo pdf no sistema operacional 
+    //============================================================================
+
+    // Definir o caminho do arquivo temporário e nome do arquivo com extenção .pdf
+    const tempDir = app.getPath('temp')
+    const filePath = path.join(tempDir, 'clientes.pdf')
+    // salvar temporariamente o arquivo
+    doc.save(filePath)
+    // abrir o arquivo no aplicativo padrão de leitura de pdf do computador do usuário
+    shell.openPath(filePath)
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+//=== FIM - Relatorio de Clientes =================================================
