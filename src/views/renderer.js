@@ -125,6 +125,9 @@ api.dbStatus((event, message) => {
 // processo de cadastro do cliente //
 const foco = document.getElementById('searchCliente')
 
+// Criar um vetor global para extrair os dados do cliente
+let arrayClient = []
+
 document.addEventListener('DOMContentLoaded', () => {
     btnUpdate.disabled = true
     btnDelete.disabled = true
@@ -199,3 +202,37 @@ function resetCpf() {
 api.resetCpf((args) => {
     resetCpf()
 })
+//==================================================================
+//= CRUD CREATE ====================================================
+function searchName(){
+    //console.log("Teste do botao buscar")
+    // Capturar o nome a ser pesquisado (Passo 1)
+    let cliName = document.getElementById('searchCliente').value
+    console.log(cliName) // teste passo 1
+    // Enviar o nome do cliente ao main (Passo 2)
+    api.searchName(cliName)
+    // Receber os dados do cliente (Passo 5)
+    api.renderClient((event, client) => {
+        // Teste de recebimento dos dados do cliente
+        console.log(client)
+        // Passo 6 - renderização dos dados do cliente, preencher os inputs do form
+        const clientData = JSON.parse(client)
+        arrayClient = clientData
+        // uso do ForEach para percorrer o vetor e extrair os dados
+        arrayClient.forEach((c) => {
+            nome.value = c.nome
+            sexo.value = c.sexo
+            cpf.value = c.cpf
+            email.value = c.email
+            tel.value = c.telefone
+            cep.value = c.cep
+            logradouro.value = c.logradouro
+            numero.value = c.numero
+            complemento.value = c.complemento
+            bairro.value = c.bairro
+            cidade.value = c.cidade
+            uf.value = c.uf
+        })
+    })
+}
+//= FIM CREATE =====================================================

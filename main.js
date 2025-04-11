@@ -302,5 +302,26 @@ async function relatorioClientes() {
   }
 
 }
-
 //=== FIM - Relatorio de Clientes =================================================
+
+//=================================================================================
+
+//= CRUD READ =====================================================================
+ipcMain.on('search-name', async (event, cliName) => {
+  // Teste do recebimento do nome do cliente (Passo 2)
+  console.log(cliName)
+  try {
+    // Passos 3 e 4 (Busca dos dados do cliente pelo nome)
+    // RegExp (expresão regular 'i' -> insentive (ignorar letra maiuscula ou minuscula))
+    const client = await clienteModel.find({
+      nome: new RegExp(cliName, 'i')
+    })
+    // teste da busca do cliente pelo nome (Passo 3 e 4)
+    console.log(client)
+    // Enviar ao renderizador (rendererCliente) os dados do cliente (Passo 5) OBS: converter para string
+    event.reply('render-client', JSON.stringify(client))
+  } catch (error) {
+    console.log(error)
+  }
+})
+//= FIM CRUD ======================================================================
