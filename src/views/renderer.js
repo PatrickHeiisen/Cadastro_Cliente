@@ -153,7 +153,7 @@ formCli.addEventListener('submit', async (event) => {
     // evitar comportamento padrão de recarregar a página
     event.preventDefault()
     console.log(
-        nome.value, 
+        nome.value,
         sexo.value,
         cpf.value,
         email.value,
@@ -173,7 +173,7 @@ formCli.addEventListener('submit', async (event) => {
         emailCli: email.value,
         telCli: tel.value,
         cepCli: cep.value,
-        logradouroCli: logradouro.value, 
+        logradouroCli: logradouro.value,
         numeroCli: numero.value,
         complementoCli: complemento.value,
         bairroCli: bairro.value,
@@ -204,35 +204,57 @@ api.resetCpf((args) => {
 })
 //==================================================================
 //= CRUD CREATE ====================================================
-function searchName(){
+// Setar o nome do cliente para fazer um novo cadastro se a busca retornar que o cliente não esta cadastrado
+api.setName((args) => {
+    console.log("Teste")
+    // Recortar o nome da busca e setar no campo 'nome'
+    let busca = document.getElementById('searchCliente').value
+    // foco no campo nome
+    nome.focus()
+    // limpar o campo busca
+    foco.value = ""
+    // copiar o nome do cliente para o campo nome
+    nome.value = busca
+
+})
+
+function searchName() {
     //console.log("Teste do botao buscar")
     // Capturar o nome a ser pesquisado (Passo 1)
     let cliName = document.getElementById('searchCliente').value
     console.log(cliName) // teste passo 1
-    // Enviar o nome do cliente ao main (Passo 2)
-    api.searchName(cliName)
-    // Receber os dados do cliente (Passo 5)
-    api.renderClient((event, client) => {
-        // Teste de recebimento dos dados do cliente
-        console.log(client)
-        // Passo 6 - renderização dos dados do cliente, preencher os inputs do form
-        const clientData = JSON.parse(client)
-        arrayClient = clientData
-        // uso do ForEach para percorrer o vetor e extrair os dados
-        arrayClient.forEach((c) => {
-            nome.value = c.nome
-            sexo.value = c.sexo
-            cpf.value = c.cpf
-            email.value = c.email
-            tel.value = c.telefone
-            cep.value = c.cep
-            logradouro.value = c.logradouro
-            numero.value = c.numero
-            complemento.value = c.complemento
-            bairro.value = c.bairro
-            cidade.value = c.cidade
-            uf.value = c.uf
+    // Validação do campo obrigatorio
+    // SE o campo de buscar não for preenchido
+    if (cliName == "") {
+        // Enviar ao main um pedido para alertar o usuario
+        // Precisa usar o preload.js
+        api.validateSearch()
+    } else {
+        // Enviar o nome do cliente ao main (Passo 2)
+        api.searchName(cliName)
+        // Receber os dados do cliente (Passo 5)
+        api.renderClient((event, client) => {
+            // Teste de recebimento dos dados do cliente
+            console.log(client)
+            // Passo 6 - renderização dos dados do cliente, preencher os inputs do form
+            const clientData = JSON.parse(client)
+            arrayClient = clientData
+            // uso do ForEach para percorrer o vetor e extrair os dados
+            arrayClient.forEach((c) => {
+                nome.value = c.nome
+                sexo.value = c.sexo
+                cpf.value = c.cpf
+                email.value = c.email
+                tel.value = c.telefone
+                cep.value = c.cep
+                logradouro.value = c.logradouro
+                numero.value = c.numero
+                complemento.value = c.complemento
+                bairro.value = c.bairro
+                cidade.value = c.cidade
+                uf.value = c.uf
+            })
         })
-    })
+    }
 }
 //= FIM CREATE =====================================================

@@ -9,5 +9,7 @@ contextBridge.exposeInMainWorld('api', {
     resetForm: (args) => ipcRenderer.on('reset-form', args),
     resetCpf:  (args) => ipcRenderer.on('reset-cpf', args),
     searchName: (cliName) => ipcRenderer.send('search-name', cliName),
-    renderClient: (client) => ipcRenderer.on('render-client', client)
+    renderClient: (client) => ipcRenderer.on('render-client', client),
+    validateSearch: () => ipcRenderer.send('validate-search'),
+    setName: (args) => ipcRenderer.on('set-name', args)
 })

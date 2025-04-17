@@ -280,10 +280,10 @@ async function relatorioClientes() {
     // Numeração automatica de pagina
     //============================================================================
     const pages = doc.internal.getNumberOfPages()
-    for (let i = 1; i <= pages; i++){
+    for (let i = 1; i <= pages; i++) {
       doc.setPage(i)
       doc.getFontSize(10)
-      doc.text(`Pagina ${i} de ${pages}`, 105,297, {align: 'center'})
+      doc.text(`Pagina ${i} de ${pages}`, 105, 297, { align: 'center' })
     }
 
     //============================================================================
@@ -307,6 +307,16 @@ async function relatorioClientes() {
 //=================================================================================
 
 //= CRUD READ =====================================================================
+
+// Validação da busca
+ipcMain.on('validate-search', () => {
+  dialog.showMessageBox({
+    type: 'warning',
+    title: 'atenção',
+    message: 'Preencher o campo de busca',
+    buttons: ['OK']
+  })
+})
 ipcMain.on('search-name', async (event, cliName) => {
   // Teste do recebimento do nome do cliente (Passo 2)
   console.log(cliName)
@@ -318,8 +328,30 @@ ipcMain.on('search-name', async (event, cliName) => {
     })
     // teste da busca do cliente pelo nome (Passo 3 e 4)
     console.log(client)
-    // Enviar ao renderizador (rendererCliente) os dados do cliente (Passo 5) OBS: converter para string
-    event.reply('render-client', JSON.stringify(client))
+    // Melhoria da experiencia do usuario (se não existir um cliente cadastrado enviar uma mensagem)
+    if (client.length === 0) {
+      // Questionar o usuario.....
+      dialog.showMessageBox({
+        type: 'warning',
+        title: 'Aviso',
+        message: 'Cliente não cadastrado. \nDeseja cadastrar este cliente',
+        defaultId: 0,
+        buttons: ['Sim', 'Não']
+      }).then((result) => {
+        // se o botão sim for pressionado
+        if(result.response === 0){
+          // Enviar ao pedido para renderer um pedido para recortar e copiar o nome do cliente
+          event.reply('set-name')
+        }else{
+        // Enviar ao renderer um pedido para limpar o campo
+        event.reply('reset-form')
+        }
+      })
+
+    } else {
+      // Enviar ao renderizador (rendererCliente) os dados do cliente (Passo 5) OBS: converter para string
+      event.reply('render-client', JSON.stringify(client))
+    }
   } catch (error) {
     console.log(error)
   }
