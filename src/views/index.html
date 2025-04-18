@@ -25,32 +25,47 @@
         </div>
         <!-- FORMULARIO -->
         <form id="formCliente" class="row g-3">
-            <!-- NOME -->
-            <div class="col-md-5">
-                <label for="nome" class="form-label">Nome:</label>
-                <input type="text" id="inputNome" class="form-control" required>
+            <!-- LINHA 1: Nome | CPF | Botão Buscar -->
+            <div class="col-12">
+                <div class="row align-items-end">
+                    <!-- Nome -->
+                    <div class="col-md-6">
+                        <label for="nome" class="form-label">Nome:</label>
+                        <input type="text" id="inputNome" class="form-control" required>
+                    </div>
+                    <!-- CPF -->
+                    <div class="col-md-4">
+                        <label for="cpf" class="form-label">CPF:</label>
+                        <input type="text" id="inputCpf" class="form-control" required onblur="validarCPF()">
+                        <div id="cpfErro" class="text-danger mt-1" style="display: none;">CPF inválido</div>
+                    </div>
+                    <!-- Botão Buscar CPF -->
+                    <div class="col-md-2">
+                        <label class="form-label d-block invisible">.</label>
+                        <button type="button" class="btn" id="btnBuscarCpf" onclick="buscarPorCpf()">Buscar</button>
+                    </div>
+                </div>
             </div>
-            <!-- SEXO -->
-            <div class="col-md-4">
-                <label for="sexo" class="form-label">Sexo:</label>
-                <select id="inputSexo" class="form-select" required>
-                    <option value="">Selecione</option>
-                    <option value="Masculino">Masculino</option>
-                    <option value="Feminino">Feminino</option>
-                    <option value="Outro">Outro</option>
-                    <option value="Prefiro não informar">Prefiro não informar</option>
-                </select>
-            </div>
-            <!-- CPF -->
-            <div class="col-md-6">
-                <label for="cpf" class="form-label">CPF:</label>
-                <input type="text" id="inputCpf" class="form-control" required onblur="validarCPF()">
-                <div id="cpfErro" class="text-danger mt-1" style="display: none;">CPF inválido</div>
-            </div>
-            <!-- EMAIL -->
-            <div class="col-md-6">
-                <label for="email" class="form-label">E-mail:</label>
-                <input type="email" id="inputEmail" class="form-control" required>
+            <!-- LINHA 2: Sexo | Email -->
+            <div class="col-12">
+                <div class="row">
+                    <!-- Sexo -->
+                    <div class="col-md-4">
+                        <label for="sexo" class="form-label">Sexo:</label>
+                        <select id="inputSexo" class="form-select" required>
+                            <option value="">Selecione</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Outro">Outro</option>
+                            <option value="Prefiro não informar">Prefiro não informar</option>
+                        </select>
+                    </div>
+                    <!-- Email -->
+                    <div class="col-md-8">
+                        <label for="email" class="form-label">E-mail:</label>
+                        <input type="email" id="inputEmail" class="form-control" required>
+                    </div>
+                </div>
             </div>
             <!-- TELEFONE -->
             <div class="col-md-6">

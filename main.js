@@ -317,6 +317,7 @@ ipcMain.on('validate-search', () => {
     buttons: ['OK']
   })
 })
+
 ipcMain.on('search-name', async (event, cliName) => {
   // Teste do recebimento do nome do cliente (Passo 2)
   console.log(cliName)

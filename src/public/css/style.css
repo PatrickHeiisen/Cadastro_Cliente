@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -8,11 +9,14 @@ html, body {
 
 .container {
     background-color: #c8c8c8;
-    min-height: 100vh; /* Faz a seção ocupar 100% da altura da tela */
+    min-height: 100vh;
+    /* Faz a seção ocupar 100% da altura da tela */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centraliza verticalmente */
-    align-items: center; /* Centraliza horizontalmente */
+    justify-content: center;
+    /* Centraliza verticalmente */
+    align-items: center;
+    /* Centraliza horizontalmente */
     padding: 20px;
 }
 
@@ -32,17 +36,20 @@ footer {
 
 .botao-container {
     display: flex;
-    justify-content: flex-start; /* Alinha os botões à esquerda */
-    gap: 10px; /* Adiciona um pequeno espaço entre os botões */
+    justify-content: flex-start;
+    /* Alinha os botões à esquerda */
+    gap: 10px;
+    /* Adiciona um pequeno espaço entre os botões */
     margin-right: 80%;
 }
 
-.rodape{
+.rodape {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
-.form-label{
+
+.form-label {
     font-weight: bold;
 }
 
@@ -71,7 +78,8 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    overflow: hidden; /* Impede que o conteúdo ultrapasse a área da seção */
+    overflow: hidden;
+    /* Impede que o conteúdo ultrapasse a área da seção */
 }
 
 /* Títulos */
@@ -112,8 +120,24 @@ button {
     transition: background-color 0.3s ease;
 }
 
+#btnBuscarCpf {
+    padding: 8px 16px;
+    font-size: 15px;
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#btnBuscarCpf:hover {
+    background-color: #0056b3;
+    /* Azul mais escuro no hover */
+    cursor: pointer;
+}
+
 /* Reset */
-#btnReset{
+#btnReset {
     width: 48px;
     height: 48px;
     background-image: url(../img/borracha.png);
