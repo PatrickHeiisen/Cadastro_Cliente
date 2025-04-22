@@ -21,47 +21,45 @@ function limparFormulario() {
 // Validação de CPF
 function validarCPF() {
     let cpfInput = document.getElementById('inputCpf');
-    let cpfErro = document.getElementById('cpfErro');
     let cpf = cpfInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
 
-    // Resetando mensagens e estilos
-    cpfErro.style.display = "none"; // Oculta erro antes da validação
+    // Resetando o estilo
     cpfInput.style.border = "";
 
+    // Verifica se o CPF é composto por 11 dígitos e não é uma sequência repetida
     if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
-        cpfErro.textContent = "CPF inválido! Insira um CPF válido.";
-        cpfErro.style.display = "block";
-        //cpfInput.style.border = "2px solid red";
-        return; // Não impedindo o envio, apenas mostrando o erro
+        cpfInput.style.border = "2px solid red";
+        return;
     }
 
     let soma = 0, resto;
-    for (let i = 1; i <= 9; i++) soma += parseInt(cpf[i - 1]) * (11 - i);
+
+    // Validação do primeiro dígito verificador
+    for (let i = 1; i <= 9; i++) {
+        soma += parseInt(cpf[i - 1]) * (11 - i);
+    }
     resto = (soma * 10) % 11;
     if (resto === 10 || resto === 11) resto = 0;
     if (resto !== parseInt(cpf[9])) {
-        cpfErro.textContent = "CPF inválido!";
-        cpfErro.style.display = "block";
-        //cpfInput.style.border = "2px solid red";
-        return; // Não impedindo o envio, apenas mostrando o erro
+        cpfInput.style.border = "2px solid red";
+        return;
     }
 
+    // Validação do segundo dígito verificador
     soma = 0;
-    for (let i = 1; i <= 10; i++) soma += parseInt(cpf[i - 1]) * (12 - i);
+    for (let i = 1; i <= 10; i++) {
+        soma += parseInt(cpf[i - 1]) * (12 - i);
+    }
     resto = (soma * 10) % 11;
     if (resto === 10 || resto === 11) resto = 0;
     if (resto !== parseInt(cpf[10])) {
-        cpfErro.textContent = "CPF inválido!";
-        cpfErro.style.display = "block";
-        //cpfInput.style.border = "2px solid red";
-        return; // Não impedindo o envio, apenas mostrando o erro
+        cpfInput.style.border = "2px solid red";
+        return;
     }
 
-    // CPF válido
-    cpfErro.style.display = "none"; // Oculta a mensagem de erro
-    //cpfInput.style.border = ""; // Remove a borda vermelha (caso tenha)
+    // CPF válido, remove borda vermelha
+    cpfInput.style.border = "";
 }
-
 
 // Validação de e-mail
 function validarEmail() {
@@ -203,6 +201,7 @@ api.resetCpf((args) => {
     resetCpf()
 })
 //==================================================================
+
 //= CRUD CREATE ====================================================
 // Setar o nome do cliente para fazer um novo cadastro se a busca retornar que o cliente não esta cadastrado
 api.setName((args) => {
@@ -257,4 +256,47 @@ function searchName() {
         })
     }
 }
-//= FIM CREATE =====================================================
+//= FIM CREATE ==================================================================
+//===============================================================================
+
+//= CRUD CREATE - Buscar Cpf ====================================================
+function buscarCpf() {
+    // Capturar o nome a ser pesquisado (Passo 1)
+    let cliCpf = document.getElementById('inputCpf').value
+    console.log(cliCpf) // teste passo 1
+    // Validação do campo obrigatorio
+    // SE o campo de buscar não for preenchido
+    if (cliCpf == "") {
+        // Enviar ao main um pedido para alertar o usuario
+        // Precisa usar o preload.js
+        api.validateCpf()
+    } else {
+        // Enviar o nome do cliente ao main (Passo 2)
+        api.buscarCpf(cliCpf)
+        // Receber os dados do cliente (Passo 5)
+        api.renderClient((event, client) => {
+            // Teste de recebimento dos dados do cliente
+            console.log(client)
+            // Passo 6 - renderização dos dados do cliente, preencher os inputs do form
+            const clientData = JSON.parse(client)
+            arrayClient = clientData
+            // uso do ForEach para percorrer o vetor e extrair os dados
+            arrayClient.forEach((c) => {
+                nome.value = c.nome
+                sexo.value = c.sexo
+                cpf.value = c.cpf
+                email.value = c.email
+                tel.value = c.telefone
+                cep.value = c.cep
+                logradouro.value = c.logradouro
+                numero.value = c.numero
+                complemento.value = c.complemento
+                bairro.value = c.bairro
+                cidade.value = c.cidade
+                uf.value = c.uf
+            })
+        })
+    }
+}
+//= FIM CREATE ===============================================================
+//============================================================================

@@ -307,7 +307,6 @@ async function relatorioClientes() {
 //=================================================================================
 
 //= CRUD READ =====================================================================
-
 // Validação da busca
 ipcMain.on('validate-search', () => {
   dialog.showMessageBox({
@@ -336,6 +335,50 @@ ipcMain.on('search-name', async (event, cliName) => {
         type: 'warning',
         title: 'Aviso',
         message: 'Cliente não cadastrado. \nDeseja cadastrar este cliente',
+        defaultId: 0,
+        buttons: ['Sim', 'Não']
+      }).then((result) => {
+        // se o botão sim for pressionado
+        if(result.response === 0){
+          // Enviar ao pedido para renderer um pedido para recortar e copiar o nome do cliente
+          event.reply('set-name')
+        }else{
+        // Enviar ao renderer um pedido para limpar o campo
+        event.reply('reset-form')
+        }
+      })
+
+    } else {
+      // Enviar ao renderizador (rendererCliente) os dados do cliente (Passo 5) OBS: converter para string
+      event.reply('render-client', JSON.stringify(client))
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
+//= FIM CRUD ======================================================================
+
+//=================================================================================
+
+//= CRUD READ - Busca Cpf =========================================================
+ipcMain.on('search-cpf', async (event, cliCpf) => {
+  // Teste do recebimento do nome do cliente (Passo 2)
+  console.log(cliCpf)
+  try {
+    // Passos 3 e 4 (Busca dos dados do cliente pelo nome)
+    // RegExp (expresão regular 'i' -> insentive (ignorar letra maiuscula ou minuscula))
+    const client = await clienteModel.find({
+      cpf: new RegExp(cliCpf, 'i')
+    })
+    // teste da busca do cliente pelo nome (Passo 3 e 4)
+    console.log(client)
+    // Melhoria da experiencia do usuario (se não existir um cliente cadastrado enviar uma mensagem)
+    if (client.length === 0) {
+      // Questionar o usuario.....
+      dialog.showMessageBox({
+        type: 'warning',
+        title: 'Aviso',
+        message: 'CPF não cadastrado. \nDeseja cadastrar este cliente',
         defaultId: 0,
         buttons: ['Sim', 'Não']
       }).then((result) => {

@@ -18,7 +18,7 @@
   },
   "homepage": "",
   "devDependencies": {
-    "electron": "^35.1.2"
+    "electron": "^35.2.0"
   },
   "dependencies": {
     "jspdf": "^3.0.1",
