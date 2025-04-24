@@ -21,6 +21,7 @@
     "electron": "^35.2.0"
   },
   "dependencies": {
+    "i": "^0.3.7",
     "jspdf": "^3.0.1",
     "mongodb": "^6.15.0",
     "mongoose": "^8.12.1"

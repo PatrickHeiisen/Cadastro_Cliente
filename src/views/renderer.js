@@ -214,6 +214,8 @@ api.setName((args) => {
     foco.value = ""
     // copiar o nome do cliente para o campo nome
     nome.value = busca
+    // restaurar a tecla enter
+    restaurarEnter()
 
 })
 
@@ -252,13 +254,15 @@ function searchName() {
                 bairro.value = c.bairro
                 cidade.value = c.cidade
                 uf.value = c.uf
+                // restaurar a tecla enter
+                restaurarEnter()
             })
         })
     }
 }
 //= FIM CREATE ==================================================================
-//===============================================================================
 
+//===============================================================================
 //= CRUD CREATE - Buscar Cpf ====================================================
 function buscarCpf() {
     // Capturar o nome a ser pesquisado (Passo 1)
@@ -299,4 +303,22 @@ function buscarCpf() {
     }
 }
 //= FIM CREATE ===============================================================
+
 //============================================================================
+//= Manipulação do Enter =====================================================
+function teclaEnter(event) {
+    if (event.key === "Enter") {
+        event.preventDefault() // Ignorar o comportamento padrao
+        // Executar o metodo de busca do cliente
+        searchName()
+    }
+}
+// "Escuta" do teclado ('keydown' = pressiona)
+formCli.addEventListener('keydown', teclaEnter)
+
+// Função para restaurar o padrao (tecla enter)
+function restaurarEnter() {
+    formCli.removeEventListener('keydown', teclaEnter)
+}
+
+//= FIM Manipulação do Enter =================================================
