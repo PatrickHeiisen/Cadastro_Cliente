@@ -12,7 +12,7 @@ function buscarEndereco() {
         })
 }
 
-function limparFormulario() {
+function resetForm() {
     document.getElementById("formCliente").reset();
     document.getElementById("cpfErro").style.display = "none";
     document.getElementById("mensagemSucesso").style.display = "none";
@@ -122,10 +122,8 @@ api.dbStatus((event, message) => {
 //=============================================================================
 // processo de cadastro do cliente
 const foco = document.getElementById('searchCliente')
-
 // Criar um vetor global para extrair os dados do cliente
 let arrayClient = []
-
 document.addEventListener('DOMContentLoaded', () => {
     btnUpdate.disabled = true
     btnDelete.disabled = true
@@ -207,129 +205,123 @@ api.resetCpf((args) => {
 //= CRUD CREATE ====================================================
 // Setar o nome do cliente para fazer um novo cadastro se a busca retornar que o cliente não esta cadastrado
 api.setName((args) => {
-    console.log("Teste")
-    // Recortar o nome da busca e setar no campo 'nome'
+    console.log("teste do IPC 'set-name'")
+    // "recortar" o nome na busca e setar no campo nome do form
     let busca = document.getElementById('searchCliente').value
-    // foco no campo nome
+    // foco no campo de busca
     nome.focus()
-    // limpar o campo busca
+    // limpar o campo de busca
     foco.value = ""
     // copiar o nome do cliente para o campo nome
     nome.value = busca
-    // restaurar a tecla enter
+    // restaurar tecla enter
     restaurarEnter()
 })
 
-function searchName() {
-    //console.log("Teste do botao buscar")
-    // Capturar o nome a ser pesquisado (Passo 1)
-    let cliName = document.getElementById('searchCliente').value
-    console.log(cliName) // teste passo 1
-    // Validação do campo obrigatorio
-    // SE o campo de buscar não for preenchido
-    if (cliName == "") {
-        // Enviar ao main um pedido para alertar o usuario
-        // Precisa usar o preload.js
-        api.validateSearch()
-    } else {
-        // Enviar o nome do cliente ao main (Passo 2)
-        api.searchName(cliName)
-        // Receber os dados do cliente (Passo 5)
-        api.renderClient((event, client) => {
-            // Teste de recebimento dos dados do cliente
-            console.log(client)
-            // Passo 6 - renderização dos dados do cliente, preencher os inputs do form
-            const clientData = JSON.parse(client)
-            arrayClient = clientData
-            // uso do ForEach para percorrer o vetor e extrair os dados
-            arrayClient.forEach((c) => {
-                nome.value = c.nome
-                sexo.value = c.sexo
-                cpf.value = c.cpf
-                email.value = c.email
-                tel.value = c.telefone
-                cep.value = c.cep
-                logradouro.value = c.logradouro
-                numero.value = c.numero
-                complemento.value = c.complemento
-                bairro.value = c.bairro
-                cidade.value = c.cidade
-                uf.value = c.uf
-                // restaurar a tecla enter
-                restaurarEnter()
-                // Desativar o botao adicionar
-                btnCreate.disabled = true
-                // Ativar os botoes editar e excluir
-                btnUpdate.disabled = false
-                btnDelete.disabled = false
-            })
-        })
-    }
-}
-//= FIM CREATE ==================================================================
 
-//===============================================================================
-//= CRUD CREATE - Buscar Cpf ====================================================
-function buscarCpf() {
-    // Capturar o nome a ser pesquisado (Passo 1)
-    let cliCpf = document.getElementById('inputCpf').value
-    console.log(cliCpf) // teste passo 1
-    // Validação do campo obrigatorio
-    // SE o campo de buscar não for preenchido
-    if (cliCpf == "") {
-        // Enviar ao main um pedido para alertar o usuario
-        // Precisa usar o preload.js
-        api.validateCpf()
-    } else {
-        // Enviar o nome do cliente ao main (Passo 2)
-        api.buscarCpf(cliCpf)
-        // Receber os dados do cliente (Passo 5)
-        api.renderClient((event, client) => {
-            // Teste de recebimento dos dados do cliente
-            console.log(client)
-            // Passo 6 - renderização dos dados do cliente, preencher os inputs do form
-            const clientData = JSON.parse(client)
-            arrayClient = clientData
-            // uso do ForEach para percorrer o vetor e extrair os dados
-            arrayClient.forEach((c) => {
-                nome.value = c.nome
-                sexo.value = c.sexo
-                cpf.value = c.cpf
-                email.value = c.email
-                tel.value = c.telefone
-                cep.value = c.cep
-                logradouro.value = c.logradouro
-                numero.value = c.numero
-                complemento.value = c.complemento
-                bairro.value = c.bairro
-                cidade.value = c.cidade
-                uf.value = c.uf
-            })
-        })
+api.setCpf((args) => {
+    console.log("teste do IPC 'set-cpf'")
+    let buscaCpf = document.getElementById('searchCliente').value
+    nome.focus()
+    foco.value = ""
+    cpf.value = buscaCpf
+    restaurarEnter()
+})
+
+
+
+function searchName() {
+    let input = document.getElementById('searchCliente').value.trim()
+    console.log(input)
+
+    if (input === "") {
+        api.validateSearch()
+        return
     }
+
+    // Verifica se é CPF (somente números e 11 dígitos)
+    let isCpf = /^\d{11}$/.test(input.replace(/\D/g, ''))
+
+    if (isCpf) {
+        // Buscar por CPF
+        api.buscarCpf(input)
+    } else {
+        // Buscar por nome
+        api.searchName(input)
+    }
+
+    api.renderClient((event, client) => {
+        const clientData = JSON.parse(client)
+        arrayClient = clientData
+
+        arrayClient.forEach((c) => {
+            nome.value = c.nome
+            sexo.value = c.sexo
+            cpf.value = c.cpf
+            email.value = c.email
+            tel.value = c.telefone
+            cep.value = c.cep
+            logradouro.value = c.logradouro
+            numero.value = c.numero
+            complemento.value = c.complemento
+            bairro.value = c.bairro
+            cidade.value = c.cidade
+            uf.value = c.uf
+            restaurarEnter()
+            //desativar o botão adicionar
+            btnCreate.disabled = true
+            // ativar e desativar o botão editar e excluir
+            btnUpdate.disabled = false
+            btnDelete.disabled = false
+        })
+
+    })
 }
-//= FIM CREATE ===============================================================
+// FIM =======================================================================
 
 //============================================================================
+
 //= Manipulação do Enter =====================================================
 function teclaEnter(event) {
     if (event.key === "Enter") {
-        event.preventDefault() // Ignorar o comportamento padrao
-        // Executar o metodo de busca do cliente
+        event.preventDefault() //ignorar o comportamento padrão
+        // executar o metodo de busca do cliente
         searchName()
     }
 }
-// "Escuta" do teclado ('keydown' = pressiona)
+
+// "Escuta" do teclado ('keydown' = pressionar tecla)
 formCli.addEventListener('keydown', teclaEnter)
 
-// Função para restaurar o padrao (tecla enter)
+// função para restaurar o padrão (tecla enter)
 function restaurarEnter() {
     formCli.removeEventListener('keydown', teclaEnter)
 }
 //= FIM Manipulação do Enter =================================================
 
 //============================================================================
+
 // Excluir Cliente ===========================================================
 // Função para deletar cliente
+const btnDelete = document.getElementById('btnDelete')
 
+// Função para excluir cliente
+function excluirCliente() {
+    const idCliente = arrayClient[0]._id // Pegando o ID do cliente no array
+    console.log("ID para excluir:", idCliente) // Só pra testar
+
+    // Enviar o ID para o main via preload.js
+    api.deleteCli(idCliente)
+}
+
+// Escutar o clique do botão excluir
+btnDelete.addEventListener('click', excluirCliente)
+
+api.limparForm(() => {
+    document.getElementById('formCliente').reset()
+    arrayClient = [] // zera o array
+    btnCreate.disabled = false
+    btnUpdate.disabled = true
+    btnDelete.disabled = true
+})
 // Fim Excluir Cliente =======================================================

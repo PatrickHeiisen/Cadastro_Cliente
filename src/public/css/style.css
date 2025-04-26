@@ -120,22 +120,6 @@ button {
     transition: background-color 0.3s ease;
 }
 
-#btnBuscarCpf {
-    padding: 8px 16px;
-    font-size: 15px;
-    color: white;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#btnBuscarCpf:hover {
-    background-color: #0056b3;
-    /* Azul mais escuro no hover */
-    cursor: pointer;
-}
-
 /* Reset */
 #btnReset {
     width: 48px;

@@ -39,11 +39,6 @@
                         <input type="text" id="inputCpf" class="form-control" required onblur="validarCPF()">
                         <div id="cpfErro" class="text-danger mt-1" style="display: none;">CPF inválido</div>
                     </div>
-                    <!-- Botão Buscar CPF -->
-                    <div class="col-md-2">
-                        <label class="form-label d-block invisible">.</label>
-                        <button type="button" class="btn" id="btnBuscarCpf" onclick="buscarCpf()">BuscarCpf</button>
-                    </div>
                 </div>
             </div>
             <!-- LINHA 2: Sexo | Email -->
@@ -142,12 +137,11 @@
                 <div class="botao-container">
                     <button type="submit" class="btn btn-success" id="btnCreate">ADICIONAR</button>
                     <button type="submit" class="btn btn-warning" id="btnUpdate">EDITAR</button>
-                    <button type="button" class="btn btn-danger" onclick="limparFormulario()" id="btnDelete">EXCLUIR</button>
+                    <button type="button" class="btn btn-danger" onclick="excluirForm()" id="btnDelete">EXCLUIR</button>
                     <button type="reset" class="btn btn-primary" onclick="resetForm()" id="btnReset"></button>
                 </div>
             </div>
-            <div id="mensagemSucesso" class="text-success text-center mt-3" style="display: none;">Cadastro realizado
-                com sucesso!</div>
+            <div id="mensagemSucesso" class="text-success text-center mt-3" style="display: none;">Cadastro realizado com sucesso!</div>
         </form>
     </section>
     <footer>

@@ -165,7 +165,6 @@ const templete = [
 //= CRUD CREATE ==================================================
 ipcMain.on('create-cliente', async (event, newCliente) => {
   console.log(newCliente)
-
   try {
     const newClientes = clienteModel({
       nome: newCliente.nomeCli,
@@ -216,12 +215,11 @@ ipcMain.on('create-cliente', async (event, newCliente) => {
   }
 
 })
-//= FIM CREATE ==================================================
+//= FIM CREATE =================================================================
 
-//===============================================================
-//===============================================================
+//===============================================================================
 
-//=== Relatorio de Clientes =====================================
+//=== Relatorio de Clientes =====================================================
 async function relatorioClientes() {
   try {
     //============================================================================
@@ -361,6 +359,15 @@ ipcMain.on('search-name', async (event, cliName) => {
 //=================================================================================
 
 //= CRUD READ - Busca Cpf =========================================================
+ipcMain.on('validate-cpf', () => {
+  dialog.showMessageBox({
+    type: 'warning',
+    title: 'atenção',
+    message: 'Preencher o campo de Cpf',
+    buttons: ['OK']
+  })
+})
+
 ipcMain.on('search-cpf', async (event, cliCpf) => {
   // Teste do recebimento do nome do cliente (Passo 2)
   console.log(cliCpf)
@@ -385,7 +392,7 @@ ipcMain.on('search-cpf', async (event, cliCpf) => {
         // se o botão sim for pressionado
         if (result.response === 0) {
           // Enviar ao pedido para renderer um pedido para recortar e copiar o nome do cliente
-          event.reply('set-name')
+          event.reply('set-cpf')
         } else {
           // Enviar ao renderer um pedido para limpar o campo
           event.reply('reset-form')
@@ -403,7 +410,30 @@ ipcMain.on('search-cpf', async (event, cliCpf) => {
 //= FIM CRUD ======================================================================
 
 // ================================================================================
+
 // Excluir Cliente ================================================================
+ipcMain.on('delete-cli', async (event, id) => {
+  console.log(id); // Teste do passo 2 (importante)
 
+  const { response } = await dialog.showMessageBox(win, {
+      type: 'warning',
+      title: "Atenção!",
+      message: "Tem certeza que deseja excluir este cliente?\nEsta ação não poderá ser desfeita.",
+      buttons: ['Cancelar', 'Excluir'] // [0,1]
+  });
 
+  if (response === 1) {
+      try {
+          const deleteCli = await clienteModel.findByIdAndDelete(id);
+
+          // Manda limpar o formulário depois de excluir
+          win.webContents.send('limpar-form')
+
+          // Depois recarrega se precisar
+          win.webContents.send('main-reload')
+      } catch (error) {
+          console.log(error);
+      }
+  }
+})
 // Fim Excluir Cliente ============================================================
