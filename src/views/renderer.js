@@ -120,7 +120,7 @@ api.dbStatus((event, message) => {
     }
 })
 //=============================================================================
-// processo de cadastro do cliente //
+// processo de cadastro do cliente
 const foco = document.getElementById('searchCliente')
 
 // Criar um vetor global para extrair os dados do cliente
@@ -129,6 +129,8 @@ let arrayClient = []
 document.addEventListener('DOMContentLoaded', () => {
     btnUpdate.disabled = true
     btnDelete.disabled = true
+    // Ativar o botao adicionar
+    btnCreate.disabled = false
     foco.focus()
 })
 //=============================================================================
@@ -216,7 +218,6 @@ api.setName((args) => {
     nome.value = busca
     // restaurar a tecla enter
     restaurarEnter()
-
 })
 
 function searchName() {
@@ -256,6 +257,11 @@ function searchName() {
                 uf.value = c.uf
                 // restaurar a tecla enter
                 restaurarEnter()
+                // Desativar o botao adicionar
+                btnCreate.disabled = true
+                // Ativar os botoes editar e excluir
+                btnUpdate.disabled = false
+                btnDelete.disabled = false
             })
         })
     }
@@ -320,5 +326,10 @@ formCli.addEventListener('keydown', teclaEnter)
 function restaurarEnter() {
     formCli.removeEventListener('keydown', teclaEnter)
 }
-
 //= FIM Manipulação do Enter =================================================
+
+//============================================================================
+// Excluir Cliente ===========================================================
+// Função para deletar cliente
+
+// Fim Excluir Cliente =======================================================

@@ -339,12 +339,12 @@ ipcMain.on('search-name', async (event, cliName) => {
         buttons: ['Sim', 'Não']
       }).then((result) => {
         // se o botão sim for pressionado
-        if(result.response === 0){
+        if (result.response === 0) {
           // Enviar ao pedido para renderer um pedido para recortar e copiar o nome do cliente
           event.reply('set-name')
-        }else{
-        // Enviar ao renderer um pedido para limpar o campo
-        event.reply('reset-form')
+        } else {
+          // Enviar ao renderer um pedido para limpar o campo
+          event.reply('reset-form')
         }
       })
 
@@ -383,12 +383,12 @@ ipcMain.on('search-cpf', async (event, cliCpf) => {
         buttons: ['Sim', 'Não']
       }).then((result) => {
         // se o botão sim for pressionado
-        if(result.response === 0){
+        if (result.response === 0) {
           // Enviar ao pedido para renderer um pedido para recortar e copiar o nome do cliente
           event.reply('set-name')
-        }else{
-        // Enviar ao renderer um pedido para limpar o campo
-        event.reply('reset-form')
+        } else {
+          // Enviar ao renderer um pedido para limpar o campo
+          event.reply('reset-form')
         }
       })
 
@@ -401,3 +401,9 @@ ipcMain.on('search-cpf', async (event, cliCpf) => {
   }
 })
 //= FIM CRUD ======================================================================
+
+// ================================================================================
+// Excluir Cliente ================================================================
+
+
+// Fim Excluir Cliente ============================================================
