@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/PatrickHeiisen/Cadastro_Cliente"
+    "url": "https://github.com/PatrickHeiisen/Cadastro_Cliente.git"
   },
   "author": "Patrick G",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/PatrickHeiisen/Cadastro_Cliente"
+    "url": "https://github.com/PatrickHeiisen/Cadastro_Cliente.git"
   },
-  "homepage": "",
+  "homepage": "https://github.com/PatrickHeiisen/Cadastro_Cliente#readme",
   "devDependencies": {
     "electron": "^35.2.0"
   },

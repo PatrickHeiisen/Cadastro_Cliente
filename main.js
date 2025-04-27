@@ -152,7 +152,7 @@ const templete = [
     submenu: [
       {
         label: 'Repositório',
-        click: () => shell.openExternal('')
+        click: () => shell.openExternal('https://github.com/PatrickHeiisen/Cadastro_Cliente.git')
       },
       {
         label: 'Sobre',
