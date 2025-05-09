@@ -146,11 +146,15 @@ let complemento = document.getElementById('inputComplemento')
 let bairro = document.getElementById('inputBairro')
 let cidade = document.getElementById('inputCidade')
 let uf = document.getElementById('inputUf')
-//= CRUD CREATE ===============================================
+// Uso do id do delete e update
+let idClient = document.getElementById('inputIdClient')
+//============================================================================
+//= CRUD CREATE ==============================================================
+// Evento associado ao submit
 formCli.addEventListener('submit', async (event) => {
     // evitar comportamento padrão de recarregar a página
     event.preventDefault()
-    console.log(
+    /*console.log(
         nome.value,
         sexo.value,
         cpf.value,
@@ -163,22 +167,50 @@ formCli.addEventListener('submit', async (event) => {
         bairro.value,
         cidade.value,
         uf.value,
-    )
-    const newCliente = {
-        nomeCli: nome.value,
-        sexoCli: sexo.value,
-        cpfCli: cpf.value,
-        emailCli: email.value,
-        telCli: tel.value,
-        cepCli: cep.value,
-        logradouroCli: logradouro.value,
-        numeroCli: numero.value,
-        complementoCli: complemento.value,
-        bairroCli: bairro.value,
-        cidadeCli: cidade.value,
-        ufCli: uf.value,
+    )*/
+    // Estrategia para usar o submit para cadastrar um novo cliente ou editar os dados de um cliente existente
+    // Verificar se existe o id do cliente
+    if (idClient.value === '') {
+        // cadastrar um novo cliente
+        const newCliente = {
+            nomeCli: nome.value,
+            sexoCli: sexo.value,
+            cpfCli: cpf.value,
+            emailCli: email.value,
+            telCli: tel.value,
+            cepCli: cep.value,
+            logradouroCli: logradouro.value,
+            numeroCli: numero.value,
+            complementoCli: complemento.value,
+            bairroCli: bairro.value,
+            cidadeCli: cidade.value,
+            ufCli: uf.value
+        }
+        // Enviar ao main
+        api.createCliente(newCliente)
+    } else {
+        // Alterar os dados de um cliente existente
+        // Teste de validação do id
+        //console.log(idClient.value)
+        // Editar um cliente existente
+        const client = {
+            idCli: idClient.value,
+            nomeCli: nome.value,
+            sexoCli: sexo.value,
+            cpfCli: cpf.value,
+            emailCli: email.value,
+            telCli: tel.value,
+            cepCli: cep.value,
+            logradouroCli: logradouro.value,
+            numeroCli: numero.value,
+            complementoCli: complemento.value,
+            bairroCli: bairro.value,
+            cidadeCli: cidade.value,
+            ufCli: uf.value
+        }
+        // Enviar ao main o objeto cliente Passo - 2
+        api.updateClient(client)
     }
-    api.createCliente(newCliente)
 })
 //==================================================================
 //= RESET FORM =====================================================
@@ -218,7 +250,6 @@ api.setName((args) => {
     restaurarEnter()
 })
 
-
 api.setCpf((args) => {
     console.log("teste do IPC 'set-cpf'")
     let buscaCpf = document.getElementById('searchCliente').value
@@ -227,8 +258,6 @@ api.setCpf((args) => {
     cpf.value = buscaCpf
     restaurarEnter()
 })
-
-
 
 function searchName() {
     let input = document.getElementById('searchCliente').value.trim()
@@ -253,8 +282,9 @@ function searchName() {
     api.renderClient((event, client) => {
         const clientData = JSON.parse(client)
         arrayClient = clientData
-
+        // Uso do forEach para percorrer o vetor
         arrayClient.forEach((c) => {
+            idClient.value = c._id
             nome.value = c.nome
             sexo.value = c.sexo
             cpf.value = c.cpf
@@ -325,3 +355,13 @@ api.limparForm(() => {
     btnDelete.disabled = true
 })
 // Fim Excluir Cliente =======================================================
+
+//============================================================================
+
+// Editar Cliente ============================================================
+
+
+// Fim Editar Cliente ========================================================
+//============================================================================
+
+

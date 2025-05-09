@@ -15,5 +15,6 @@ contextBridge.exposeInMainWorld('api', {
     buscarCpf: (cliCpf) => ipcRenderer.send('search-cpf', cliCpf),
     setCpf: (args) => ipcRenderer.on('set-cpf', args),
     deleteCli: (id) => ipcRenderer.send('delete-cli', id),
-    limparForm: (callback) => ipcRenderer.on('limpar-form', callback)
+    limparForm: (callback) => ipcRenderer.on('limpar-form', callback),
+    updateClient: (client) => ipcRenderer.send('update-client', client)
 })
